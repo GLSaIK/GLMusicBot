@@ -1,34 +1,11 @@
-import yt_dlp
-import os
+
 from telegram import Update # type: ignore
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters, Application 
 import asyncio
 TOKEN = "8527471359:AAHmEm8UxP7-I0_7RIhqzXTosyz9WRMHG3Y"
 
-fname = "audio.webm"
-settings = {
-    'format': 'bestaudio/best',
-    'outtmpl': 'audio.%(ext)s',
-}
-
 async def error_handler(update, context):
-    print(f"Ошибка: {context.error}")
-
-async def music(update):
-    url = update.message.text
-    try:
-        with yt_dlp.YoutubeDL(settings) as dwn:
-            info = dwn.extract_info(url, download=False)
-            if int(info.get("duration")) < 1800:
-                dwn.download([url])
-                await update.message.reply_audio(
-                    audio = open(fname, 'rb')
-                )
-            else:
-                await update.message.reply_text("слишком длинное")
-    finally:
-        if os.path.exists(fname):
-            os.remove(fname)
+    await update.message.reply_text("слишком длинное")
 
 
 app = ApplicationBuilder().token(TOKEN).build()
